@@ -8,7 +8,7 @@ module Microprogram (
 
 import Control.Monad
 
--- Type synonyms allow to avoid pain when converting values to addresses
+-- Type synonyms let us avoid the pain of converting values to addresses, yet improve readability
 type Address = Int
 type Value   = Int
 

@@ -12,6 +12,28 @@ import Control.Monad
 type Address = Int
 type Value   = Int
 
+class Monad m => Machine m where
+    type State m
+    get :: m (State m)
+    put :: State m -> m ()
+
+type Instruction m a = State m -> (a, State m)
+
+execute :: Machine m => Instruction m a -> m a
+execute instruction = do
+    s <- get
+    let (a, s') = instruction s
+    put s'
+    return a
+
+-- class Machine m => VonNeumannMachine m where
+--     data Memory m
+--     data Register m
+--     readMemory    :: Address -> m Value
+--     writeMemory   :: Address -> Value -> m ()
+--     readRegister  :: Register m -> m Value
+--     writeRegister :: Register m -> Value -> m ()
+    
 class Monad m => Microprogram m where
     data Register m
     pc, opcode    :: Register m

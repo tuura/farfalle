@@ -1,6 +1,6 @@
 {-# LANGUAGE TypeFamilies #-}
 
-module Listing (Listing (..), listing) where
+module Listing (Listing (..), Register (..), listing) where
 
 import Microprogram
 import Control.Monad
@@ -16,9 +16,17 @@ instance Monad Listing where
       where
         Listing result ss' = f a
 
+instance Applicative Listing where
+    pure  = return
+    (<*>) =  ap
+
+instance Functor Listing where
+    fmap = (<$>)
+
 instance Microprogram Listing where
     data Register Listing = Register String
     pc = Register "pc"
+    opcode = Register "opcode"
     readMemory address = Listing 0 ["readMemory " ++ show address]
     writeMemory address value = Listing () ["writeMemory " ++ show address ++ " " ++ show value]
     readRegister (Register register) = Listing 0 ["readRegister " ++ register]

@@ -24,6 +24,13 @@ instance Monad Simulation where
                             Simulation h = g a
                           in h p'
 
+instance Applicative Simulation where
+    pure  = return
+    (<*>) =  ap
+
+instance Functor Simulation where
+    fmap = (<$>)
+
 instance Microprogram Simulation where
     data Register Simulation = R Int | RegisterPC | RegisterOpcode
     pc     = RegisterPC
